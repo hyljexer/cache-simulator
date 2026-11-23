@@ -1,0 +1,11 @@
+# Przykładowy ślad edukacyjny (cache 64B, blok 16B, adresy 16-bit)
+R 0x0000   # Zimny miss - ładuje blok 0x000
+R 0x0004   # HIT (lokalność przestrzenna - ten sam blok!)
+R 0x0040   # Konflikt z 0x0000 w Direct-Mapped
+R 0x0000   # W Direct-Mapped znowu MISS (efekt ping-pong)
+R 0x0020   # W 2-Way Set-Associative wypycha najstarszy blok ze zbioru 0
+R 0x0000   # Kluczowy test: w 2-Way LRU to HIT, a w 2-Way FIFO to MISS!
+W 0x0044   # Zapis -> ustawia bit DIRTY na linii
+R 0x0080   # Kolejny blok
+R 0x00C0   # Wypycha brudną linię (dirty eviction)
+R 0x0008   # Powrót do pierwszego bloku
